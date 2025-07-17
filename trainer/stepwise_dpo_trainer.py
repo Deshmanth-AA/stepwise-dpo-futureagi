@@ -20,7 +20,7 @@ class StepwiseDPOTrainer(Trainer):
         super().__init__(*args, **kwargs)
         self.reward_model_fn = reward_model_fn
 
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         """
         Compute the loss using stepwise reward aggregation.
         """
@@ -37,6 +37,12 @@ class StepwiseDPOTrainer(Trainer):
         prompts, step_lists = [], []
         for full_text in decoded_inputs:
             # Assumes format: "Prompt:\n...\nSteps:\n1. ...\n2. ...\n"
+            if "Steps:" not in full_text:
+                return torch.tensor(0.0, requires_grad=True, device=logits.device)
+            parts = full_text.split("Steps:")
+            prompt = parts[0].strip()
+            steps = parts[1].strip().split("\n")
+            steps = [s.strip().lstrip("1234567890. ") for s in steps if s.strip()]
             parts = full_text.split("Steps:")
             prompt = parts[0].strip()
             steps = parts[1].strip().split("\n")

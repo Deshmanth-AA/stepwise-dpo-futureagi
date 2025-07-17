@@ -6,7 +6,7 @@ from typing import List, Tuple
 
 import openai
 
-openai.api_key = os.getenv("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")
+openai.api_key = "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"
 
 def evaluate_stepwise(prompt: str, steps: List[str]) -> List[float]:
     """
@@ -37,7 +37,7 @@ Only output a list of floats separated by commas.
     for attempt in range(3):
         try:
             response = openai.ChatCompletion.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are an expert grader."},
                     {"role": "user", "content": full_prompt.strip()}
