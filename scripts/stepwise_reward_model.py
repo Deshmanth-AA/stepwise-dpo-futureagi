@@ -6,7 +6,8 @@ from typing import List, Tuple
 
 import openai
 
-openai.api_key = "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"
+sk
+openai.api_key = ""
 
 def evaluate_stepwise(prompt: str, steps: List[str]) -> List[float]:
     """
